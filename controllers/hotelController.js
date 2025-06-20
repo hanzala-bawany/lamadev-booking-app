@@ -91,14 +91,23 @@ export const getHotel = async (req, res) => {
 //  get All hotels
 export const getAllHotels = async (req, res) => {
 
+    const {min,max,limit,...others} = req.query
+
+    const minPrice = parseInt(min) || 1000;
+    const maxPrice = parseInt(max) || 100000;
+    const limitNum = parseInt(limit) || 0 ;
+
+    const obj = {...others} 
+    const cheapestPrice = {$gt : minPrice , $lt : maxPrice }
+    if(min || max) obj.cheapestPrice = cheapestPrice 
+
     try {
-        // const getHotels = await Hotel.find({name : {$exists : true}})
-        const getHotels = await Hotel.find({})
+        const getHotels = await Hotel.find( obj ).limit(limitNum)
         console.log("hotels data recieving succesfully");
         successHandler(res, 200, "all hotels data recieving succesfully", getHotels)
     }
     catch (error) {
-        errorHandler(res, 400, "your info have error")
+        errorHandler(res, 400, `your info have error : ${error}`)
         console.log("get All Hotels me error he : ", error);
     }
 
