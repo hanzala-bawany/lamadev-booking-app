@@ -1,4 +1,6 @@
 import { Hotel } from "../models/hotelModel.js"
+import { Rooms } from "../models/roomModel.js"
+
 import { errorHandler, successHandler } from "../utills/resposeHandler.js";
 
 //  create hotel
@@ -68,7 +70,6 @@ export const deleteHotel = async (req, res) => {
     }
 
 }
-
 
 
 //  get One hotel
@@ -161,6 +162,28 @@ export const propertyCountByType = async (req, res) => {
     catch (error) {
         errorHandler(res, 400, "your info have error")
         console.log("property count by Type me error he : ", error);
+    }
+
+} 
+
+
+//  get rooms  by hotel id
+export const getRoomsByHotelId = async (req, res) => {
+
+    const hotelId = await req.params.id
+    console.log(hotelId);
+
+    try {
+        const hotel = await Hotel.findById(hotelId)
+        const rooms = await Promise.all(
+            hotel.rooms.map( (roomId) => Rooms.findById(roomId) )
+        )
+        console.log("rooms data by hotel id recieving succesfully");
+        successHandler(res, 200, "Rooms data recieving succesfully", rooms)
+    }
+    catch (error) {
+        errorHandler(res, 400, "your info have error",error.message)
+        console.log("property count by city me error he : ", error);
     }
 
 } 

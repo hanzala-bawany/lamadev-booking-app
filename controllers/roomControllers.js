@@ -8,7 +8,6 @@ export const createRoom = async (req, res) => {
 
     try {
         const hotelId = req.params.hotelId
-        console.log(hotelId, "---> hotel ki id para,ms se mile");
 
         const { title, price, maxPeople, descr, roomNumbers } = req.body
         const data = {}
