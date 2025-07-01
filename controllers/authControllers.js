@@ -72,15 +72,17 @@ export const loginController = async (req, res) => {
         }, process.env.JWT_secretKey, { expiresIn: "1h" })
 
         res.cookie("token", token, {
-            httpOnly: true,
-            secure: process.env.NODE_ENV === "production",
-            sameSite: "strict",
-            maxAge: 60 * 60 * 1000, // 1 hour
-        });
+            httpOnly: true,  //must
+            secure: process.env.NODE_ENV === "production", // noty musr
+            sameSite: "strict", // not must
+            maxAge: 60 * 60 * 1000, // 1 hour    <--  not must
+        })
+        .status(200)
+        .json( { loginUser: {...otherUserDetail} , isAdmin   } ) 
 
 
 
-        return successHandler(res, 200, `user login succefully`, { loginUser: otherUserDetail })
+        return successHandler(res, 200, `user login succefully`, { loginUser: {...otherUserDetail} , isAdmin   })
     }
     catch (error) {
         console.log(error, "---> login me error he");

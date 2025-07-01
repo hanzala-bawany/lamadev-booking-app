@@ -52,6 +52,27 @@ export const updateRoom = async (req, res) => {
 
 }
 
+//  update Room availability 
+export const updateRoomAvailability = async (req, res) => {
+
+    const { id: roomId } = req.params
+
+    try {
+        const availabilityUpdate = await Rooms.updateOne({ "roomNumbers._id": roomId },
+            {
+                $push: {
+                    "roomNumbers.$.unavailableDates": req.body.date
+                }
+            })
+        console.log("room availability updated succesfully");
+        successHandler(res, 200, "room availabiliyt updated succesfully", availabilityUpdate)
+    }
+    catch (error) {
+        errorHandler(res, 400, "your info have error", error)
+        console.log("room availability update me error he : ", error);
+    }
+
+}
 
 //  delete room
 export const deleteRoom = async (req, res) => {
@@ -75,7 +96,6 @@ export const deleteRoom = async (req, res) => {
 }
 
 
-
 //  get One room
 export const getRoom = async (req, res) => {
 
@@ -97,7 +117,7 @@ export const getRoom = async (req, res) => {
 export const getAllRooms = async (req, res) => {
 
     try {
-        const getRooms = await Rooms.find({ })
+        const getRooms = await Rooms.find({})
         console.log("rooms data recieving succesfully");
         successHandler(res, 200, "all rooms data recieving succesfully", getRooms)
     }
