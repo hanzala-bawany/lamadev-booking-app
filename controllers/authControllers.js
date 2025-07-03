@@ -7,7 +7,7 @@ import cookieParser from "cookie-parser";
 const { sign } = pkg;
 const { hash, compare } = bcrypt
 
-//  register controller
+//  register controller 
 export const registerController = async (req, res) => {
 
     console.log("💡 RegisterController chal gaya");
@@ -77,12 +77,12 @@ export const loginController = async (req, res) => {
             sameSite: "strict", // not must
             maxAge: 60 * 60 * 1000, // 1 hour    <--  not must
         })
-        .status(200)
-        .json( { loginUser: {...otherUserDetail} , isAdmin   } ) 
+        // .status(200)
+        // .json( { loginUser: {...otherUserDetail} , isAdmin   } ) 
 
 
+        return successHandler(res, 200, `user login succefully`, { loginUser: {...otherUserDetail} , isAdmin } )
 
-        return successHandler(res, 200, `user login succefully`, { loginUser: {...otherUserDetail} , isAdmin   })
     }
     catch (error) {
         console.log(error, "---> login me error he");
