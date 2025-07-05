@@ -5,14 +5,19 @@ const { verify } = pkg
 export const verifyToken = async (req, res, next) => {
 
     try {
-        const fullToken = req?.headers?.authorization
-        if(!fullToken) errorHandler(res,404,"token not found")
 
-        const Bearer = fullToken.split(" ")[0]
-        if (Bearer !== "Bearer") errorHandler(res, 404, "token is invalid")
-
-        const token = fullToken.split(" ")[1]
+        const token = req?.cookies?.token
+        console.log(req, "<------ console req");
         if (!token) errorHandler(res, 404, "token not found")
+
+        // const fullToken = req?.headers?.authorization
+        // if (!fullToken) errorHandler(res, 404, "token not found")
+
+        // const Bearer = fullToken.split(" ")[0]
+        // if (Bearer !== "Bearer") errorHandler(res, 404, "token is invalid")
+
+        // const token = fullToken.split(" ")[1]
+        // if (!token) errorHandler(res, 404, "token not found")
 
         const isTokenValid = await verify(token, process.env.JWT_secretKey);
         console.log(isTokenValid, "----> login wale user ka token wala data");
@@ -41,7 +46,7 @@ export const verifyUser = async (req, res, next) => {
     }
     catch (error) {
         console.log(error, "---> verify user me error he");
-        errorHandler(res, 500, "uknown error in verify user",error)
+        errorHandler(res, 500, "uknown error in verify user", error)
     }
 }
 

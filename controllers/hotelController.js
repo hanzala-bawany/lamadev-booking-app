@@ -16,7 +16,7 @@ export const createHotel = async (req, res) => {
         successHandler(res, 200, "hotel data save succesfully", savedHotel)
     }
     catch (error) {
-        errorHandler(res, 400, "your info have error")
+        errorHandler(res, 400, "your info have error" , error?.message)
         console.log("hotel create me error he : ", error);
     }
 
