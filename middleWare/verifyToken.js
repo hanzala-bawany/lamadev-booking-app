@@ -22,15 +22,24 @@ export const verifyToken = async (req, res, next) => {
         const isTokenValid = await verify(token, process.env.JWT_secretKey);
         console.log(isTokenValid, "----> login wale user ka token wala data");
 
-        if (!isTokenValid) return errorHandler(res, 402, `your token is not valid , agian try`);
-
         req.loginUser = { ...isTokenValid }
         console.log(req.loginUser, "---> token ke waqt dia hua data");
         next()
+
     }
     catch (error) {
         console.log(error, "---> token verification me error he");
-        errorHandler(res, 500, "unknown error in token varification", error)
+
+        if (error?.name === "TokenExpiredError" || error?.name === "JsonWebTokenError") {
+            res.clearCookie("token", {
+                httpOnly: true,
+                sameSite: "lax",
+                secure: false
+            })
+
+        }
+
+        errorHandler(res, 402, `token error`, error.message);
     }
 
 }
