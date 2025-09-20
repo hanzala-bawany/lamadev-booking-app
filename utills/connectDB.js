@@ -13,11 +13,11 @@ const connectDB = async () => {
     console.log(error);
   }
 };
-    
-  // Jab connection toot jaye
-  mongoose.connection.on('disconnected', () => {
-    console.log('⚠️ MongoDB disconnected');
-  });
-  
 
-export {connectDB}
+// Jab connection toot jaye
+mongoose.connection.on('disconnected', () => {
+  console.log('⚠️ MongoDB disconnected');
+});
+
+
+export { connectDB }
